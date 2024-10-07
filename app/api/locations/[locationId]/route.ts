@@ -3,9 +3,13 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const locationId = searchParams.get("locationId");
+/*
+    Endpoint to get a specific location's reviews
+
+    e.g: http://localhost:3000/api/locations/66fec74fdc05f6754387603b
+*/
+export async function GET(req: NextRequest, { params } : { params : { locationId : string}}) {
+    const locationId = params.locationId;
 
     if(!locationId) {
         return NextResponse.json({ error: "No locationId provided." }, { status: 400});

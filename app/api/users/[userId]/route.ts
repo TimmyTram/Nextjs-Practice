@@ -1,0 +1,71 @@
+import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
+
+// allows us to connect the database.
+const prisma = new PrismaClient();
+
+export async function PATCH(req: NextRequest, { params } : { params : { userId : string}}) {
+    const { email, password } = await req.json();
+    const userId = params.userId;
+
+    if(!userId) {
+        return NextResponse.json({ error: "No userId provided." }, { status: 400 });
+    }
+
+    if(!email && !password) {
+        return NextResponse.json({ error: "No email or password provided." }, { status: 400 });
+    }
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    });
+
+    if(!user) {
+        return NextResponse.json({ error: "User not found." }, { status: 404 });
+    }
+
+    const updateData: any = {};
+
+    if(email) {
+        const existingEmail = await prisma.user.findFirst({
+            where: { email },
+        });
+        
+        if(existingEmail && existingEmail.id !== userId) {
+            return NextResponse.json({ error: "Email already taken by another user." }, { status: 400 });
+        }
+
+        updateData.email = email;
+    }
+
+
+    if(password) {
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(password, salt);
+        updateData.password = hashedPassword;
+    }
+
+    const updatedUser = await prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: updateData
+    });
+
+    return NextResponse.json({
+        "message": "User updated successfully.",
+        updatedUser: {
+            id: updatedUser.id,
+            email: updatedUser.email,
+            username: updatedUser.username,
+        },
+    }, 
+    { status: 200 }
+);
+
+
+
+}
