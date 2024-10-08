@@ -52,7 +52,7 @@ model Location {
 model Review {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   rating Int
-  comment String
+  description String
 
   // Relationships
   location Location @relation(fields: [locationId], references: [id])
@@ -68,18 +68,20 @@ model OperatingHours {
   
   // Relationships
   timeSlots TimeSlot[]
-  location Location @relation(fields: [locationId], references: [id])
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
   locationId String @db.ObjectId
 }
 
 // a location can have multiple time slots which are different per day.
 model TimeSlot {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  startTime DateTime
-  endTime DateTime
+  
+  // Not using DateTime here because I want more control and mongodb doesn't allow it.
+  startTime String
+  endTime String
 
   // Relationships
-  operatingHours OperatingHours @relation(fields: [operatingHoursId], references: [id])
+  operatingHours OperatingHours @relation(fields: [operatingHoursId], references: [id], onDelete: Cascade)
   operatingHoursId String @db.ObjectId
 }
 

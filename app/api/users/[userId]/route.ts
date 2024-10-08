@@ -5,15 +5,15 @@ import bcrypt from "bcryptjs";
 // allows us to connect the database.
 const prisma = new PrismaClient();
 
-export async function PATCH(req: NextRequest, { params } : { params : { userId : string}}) {
+export async function PATCH(req: NextRequest, { params }: { params: { userId: string } }) {
     const { email, password } = await req.json();
     const userId = params.userId;
 
-    if(!userId) {
+    if (!userId) {
         return NextResponse.json({ error: "No userId provided." }, { status: 400 });
     }
 
-    if(!email && !password) {
+    if (!email && !password) {
         return NextResponse.json({ error: "No email or password provided." }, { status: 400 });
     }
 
@@ -23,18 +23,18 @@ export async function PATCH(req: NextRequest, { params } : { params : { userId :
         }
     });
 
-    if(!user) {
+    if (!user) {
         return NextResponse.json({ error: "User not found." }, { status: 404 });
     }
 
     const updateData: any = {};
 
-    if(email) {
+    if (email) {
         const existingEmail = await prisma.user.findFirst({
             where: { email },
         });
-        
-        if(existingEmail && existingEmail.id !== userId) {
+
+        if (existingEmail && existingEmail.id !== userId) {
             return NextResponse.json({ error: "Email already taken by another user." }, { status: 400 });
         }
 
@@ -42,7 +42,7 @@ export async function PATCH(req: NextRequest, { params } : { params : { userId :
     }
 
 
-    if(password) {
+    if (password) {
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
         updateData.password = hashedPassword;
@@ -62,10 +62,7 @@ export async function PATCH(req: NextRequest, { params } : { params : { userId :
             email: updatedUser.email,
             username: updatedUser.username,
         },
-    }, 
-    { status: 200 }
-);
-
-
-
+    },
+        { status: 200 }
+    );
 }

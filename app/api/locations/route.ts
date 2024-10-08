@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { LocationType, PrismaClient } from "@prisma/client";
+import { DayOfWeek, LocationType, PrismaClient } from "@prisma/client";
 
 interface LocationData {
     name: string;
@@ -12,6 +12,17 @@ interface LocationData {
     busynessStatus: number;
     imageWebLink: string;
     animalFriendliness: boolean;
+    operatingHours: OperatingHour[];
+}
+
+interface OperatingHour {
+    day: DayOfWeek;
+    timeSlots: TimeSlot[];
+}
+
+interface TimeSlot {
+    startTime: string;
+    endTime: string;
 }
 
 
@@ -32,7 +43,18 @@ export async function GET() {
                 rating: true,
                 busynessStatus: true,
                 imageWebLink: true,
-                animalFriendliness: true
+                animalFriendliness: true,
+                operatingHours: {
+                    select: {
+                        day: true,
+                        timeSlots: {
+                            select: {
+                                startTime: true,
+                                endTime: true
+                            }
+                        }
+                    }
+                }
             }
         });
 
@@ -55,6 +77,7 @@ export async function POST(req: NextRequest) {
             'seatingCapacity',
             'category',
             'animalFriendliness',
+            'operatingHours'
         ];
 
 
@@ -74,16 +97,39 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Location already exists." }, { status: 400 });
         }
 
-        const location = await prisma.location.create({
-            data: {
-                name: body.name,
-                address: body.address,
-                phoneNumber: body.phoneNumber,
-                hasWifi: body.hasWifi,
-                seatingCapacity: body.seatingCapacity,
-                category: body.category,
-                animalFriendliness: body.animalFriendliness
+        const location = await prisma.$transaction(async (prisma) => {
+            // create location
+            const newLocation = await prisma.location.create({
+                data: {
+                    name: body.name,
+                    address: body.address,
+                    phoneNumber: body.phoneNumber,
+                    hasWifi: body.hasWifi,
+                    seatingCapacity: body.seatingCapacity,
+                    category: body.category,
+                    rating: body.rating,
+                    busynessStatus: body.busynessStatus,
+                    imageWebLink: body.imageWebLink,
+                    animalFriendliness: body.animalFriendliness
+                }
+            })
+
+            // create operating hours
+            for(const operatingHour of body.operatingHours) {
+                const createdOperatingHour = await prisma.operatingHours.create({
+                    data: {
+                        day: operatingHour.day,
+                        locationId: newLocation.id,
+                        timeSlots: {
+                            create: operatingHour.timeSlots.map((slot: TimeSlot) => ({
+                                startTime: slot.startTime,
+                                endTime: slot.endTime
+                            }))
+                        }
+                    }
+                });
             }
+            return newLocation;
         });
 
         return NextResponse.json(location, { status: 201 });

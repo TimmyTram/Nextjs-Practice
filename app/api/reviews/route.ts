@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 interface ReviewData {
     rating: number;
-    comment: string;
+    description: string;
     locationId: string;
     userId: string;
 }
@@ -17,7 +17,7 @@ export async function GET() {
             select: {
                 id: true,
                 rating: true,
-                comment: true,
+                description: true,
                 timestamp: true
             }
         });
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         const body: ReviewData = await req.json();
         const requiredFields: (keyof ReviewData)[] = [
             'rating',
-            'comment',
+            'description',
             'locationId',
             'userId'
         ]
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
         const review = await prisma.review.create({
             data: {
                 rating: body.rating,
-                comment: body.comment,
+                description: body.description,
                 locationId: body.locationId,
                 userId: body.userId
             }
@@ -83,43 +83,4 @@ export async function POST(req: NextRequest) {
         console.log(`[ERROR]: Error in POST of api/reviews/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
     }
-    
-    // const { rating, comment, locationId, userId } = await req.json();
-
-    // if(!rating || !comment || !locationId || !userId) {
-    //     return NextResponse.json({ error: "No rating, comment, locationId or userId provided." }, { status: 400});
-    // }
-
-    // // check if location exists
-    // const location = await prisma.location.findFirst({
-    //     where: {
-    //         id: locationId
-    //     }
-    // });
-
-    // if(!location) {
-    //     return NextResponse.json({ error: "Location does not exist." }, { status: 400});
-    // }
-
-    // //check if user exists
-    // const user = await prisma.user.findFirst({
-    //     where: {
-    //         id: userId
-    //     }
-    // });
-
-    // if(!user) {
-    //     return NextResponse.json({ error: "User does not exist." }, { status: 400});
-    // }
-
-    // const review = await prisma.review.create({
-    //     data: {
-    //         rating,
-    //         comment,
-    //         locationId,
-    //         userId
-    //     }
-    // });
-
-    // return NextResponse.json(review);
 }
