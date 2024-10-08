@@ -36,8 +36,8 @@ model Location {
   category LocationType
   rating Int @default(0)
   busynessStatus Int @default(0)
-  ImageWebLink String @default("N/A")
-  AnimalFriendliness Boolean
+  imageWebLink String @default("N/A")
+  animalFriendliness Boolean
 
   // A Location can have many reviews
   reviews Review[]
