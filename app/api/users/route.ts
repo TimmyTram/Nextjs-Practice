@@ -64,8 +64,7 @@ export async function POST(req: NextRequest) {
     data: {
       username,
       email,
-      password: await bcrypt.hash(password, salt),
-      role: "default",
+      password: await bcrypt.hash(password, salt)
     },
   });
 

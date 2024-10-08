@@ -18,25 +18,101 @@ model User {
   username  String @unique
   email String @unique
   password String
-  role String
+  role Role @default(CUSTOMER)
   timestamp DateTime @default(now())
+
+  // User can own multiple reviews
   reviews Review[]
+  bookmarks Bookmark[]
 }
 
 model Location {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   address String @unique
+  phoneNumber String
+  hasWifi Boolean
+  seatingCapacity Int
+  category LocationType
+  rating Int @default(0)
+  busynessStatus Int @default(0)
+  ImageWebLink String @default("N/A")
+  AnimalFriendliness Boolean
+
+  // A Location can have many reviews
   reviews Review[]
+
+  // A Location can have many operating hours
+  operatingHours OperatingHours[]
+
+  // A Location can have many bookmarks
+  bookmarks Bookmark[]
 }
 
 model Review {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   rating Int
   comment String
+
+  // Relationships
   location Location @relation(fields: [locationId], references: [id])
   locationId String @db.ObjectId
   user User @relation(fields: [userId], references: [id])
   userId String @db.ObjectId
   timestamp DateTime @default(now())
+}
+
+model OperatingHours {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  day DayOfWeek
+  
+  // Relationships
+  timeSlots TimeSlot[]
+  location Location @relation(fields: [locationId], references: [id])
+  locationId String @db.ObjectId
+}
+
+// a location can have multiple time slots which are different per day.
+model TimeSlot {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  startTime DateTime
+  endTime DateTime
+
+  // Relationships
+  operatingHours OperatingHours @relation(fields: [operatingHoursId], references: [id])
+  operatingHoursId String @db.ObjectId
+}
+
+model Bookmark {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  locationId String @db.ObjectId
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+}
+
+// Enums
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum Role {
+  ADMIN
+  BUSINESS_OWNER
+  CUSTOMER
+}
+
+// Can add more location types
+enum LocationType {
+  LIBRARY
+  CAFE
 }
