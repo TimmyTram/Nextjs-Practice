@@ -3,45 +3,45 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-/*
-    Endpoint to get a specific location's reviews
-
-    e.g: http://localhost:3000/api/locations/{locationId}
-*/
-export async function GET(req: NextRequest, { params } : { params : { locationId : string}}) {
+/**
+ * @Endpoint - GET /api/locations/{locationId}
+ * @description - Fetches a single location from the database given a location id. 
+ * @returns - a single location from the database.
+ */
+export async function GET(req: NextRequest, { params }: { params: { locationId : string }}) {
     try {
         const locationId = params.locationId;
-    
+
         if(!locationId) {
             return NextResponse.json({ error: "No locationId provided." }, { status: 400});
         }
-    
-        // get all reviews and their information for a location and include the name of the user who created the review
-        const reviews = await prisma.review.findMany({
+
+        const location = await prisma.location.findUnique({
             where: {
-                locationId: locationId
+                id: locationId
             },
-            select: {
-                id: true,
-                rating: true,
-                description: true,
-                timestamp: true,
-                user: {
+            include: {
+                operatingHours: {
                     select: {
-                        username: true
+                        day: true,
+                        timeSlots: {
+                            select: {
+                                startTime: true,
+                                endTime: true
+                            }
+                        }
                     }
                 }
             }
         });
-    
-        if(!reviews) {
-            return NextResponse.json({ error: "No reviews found." }, { status: 404});
+
+        if(!location) {
+            return NextResponse.json({ error: "Location not found." }, { status: 404});
         }
-    
-        return NextResponse.json(reviews);
+
+        return NextResponse.json(location);
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/locations/[locationId]/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
     }
-    
 }

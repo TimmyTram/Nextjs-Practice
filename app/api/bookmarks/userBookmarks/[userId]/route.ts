@@ -4,6 +4,11 @@ import { PrismaClient } from "@prisma/client";
 // allows us to connect the database.
 const prisma = new PrismaClient();
 
+/**
+ * @Endpoint - GET /api/bookmarks/userBookmarks/{userId}
+ * @description - Fetches all bookmarks for a specific user given their id. 
+ * @returns - all bookmarks for a specific user given their id.
+ */
 export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
     try {
         const userId = params.userId;
@@ -30,11 +35,16 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
 
         return NextResponse.json(bookmarks);
     } catch (error: any) {
-        console.log(`[ERROR]: Error in GET of api/users/[userId]/bookmarks/route.ts: ${error}`);
+        console.log(`[ERROR]: Error in GET of api/bookmarks/userBookmarks/[userId]/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
     }
 }
 
+/**
+ * @Endpoint - POST /api/bookmarks/userBookmarks/{userId}
+ * @description - Creates a new bookmark for a specific user given their id. 
+ * @returns - the newly created bookmark.
+ */
 export async function POST(req: NextRequest, { params }: { params: { userId: string } }) {
     try {
         const body = await req.json();
@@ -61,7 +71,7 @@ export async function POST(req: NextRequest, { params }: { params: { userId: str
 
         return NextResponse.json(bookmark, { status: 201 });
     } catch (error: any) {
-        console.log(`[ERROR]: Error in POST of api/users/[userId]/bookmarks/route.ts: ${error}`);
+        console.log(`[ERROR]: Error in POST of api/bookmarks/userBookmarks/[userId]/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
     }
 }
