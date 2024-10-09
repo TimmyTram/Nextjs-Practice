@@ -11,8 +11,6 @@ export async function GET(req: NextRequest, { params }: { params: { locationId :
             return NextResponse.json({ error: "No locationId provided." }, { status: 400});
         }
 
-        // get specific details for given location
-
         const location = await prisma.location.findUnique({
             where: {
                 id: locationId

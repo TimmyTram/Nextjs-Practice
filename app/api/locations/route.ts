@@ -31,33 +31,6 @@ const prisma = new PrismaClient();
 // Endpoint to get all locations from the database
 export async function GET() {
     try {
-        // const locations = await prisma.location.findMany({
-        //     select: {
-        //         id: true,
-        //         name: true,
-        //         address: true,
-        //         phoneNumber: true,
-        //         hasWifi: true,
-        //         seatingCapacity: true,
-        //         category: true,
-        //         rating: true,
-        //         busynessStatus: true,
-        //         imageWebLink: true,
-        //         animalFriendliness: true,
-        //         operatingHours: {
-        //             select: {
-        //                 day: true,
-        //                 timeSlots: {
-        //                     select: {
-        //                         startTime: true,
-        //                         endTime: true
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // });
-
         const locations = await prisma.location.findMany({
             include: {
                 operatingHours: {

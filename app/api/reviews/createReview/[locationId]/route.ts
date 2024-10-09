@@ -4,37 +4,36 @@ import { PrismaClient } from "@prisma/client";
 interface ReviewData {
     rating: number;
     description: string;
-    locationId: string;
     userId: string;
 }
 
 const prisma = new PrismaClient();
 
-// Endpoint to create a new review
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, { params }: { params: { locationId: string } }) {
     try {
         const body: ReviewData = await req.json();
+        const locationId = params.locationId;
+
         const requiredFields: (keyof ReviewData)[] = [
             'rating',
             'description',
-            'locationId',
             'userId'
         ]
-    
+
         const missingFields = requiredFields.filter(field => !body[field] === undefined);
-    
-        if (missingFields.length > 0) {
+
+        if(missingFields.length > 0) {
             return NextResponse.json({ error: `Missing fields: ${missingFields.join(', ')}` }, { status: 400 });
         }
-        
+
         const location = await prisma.location.findFirst({
             where: {
-                id: body.locationId
+                id: locationId
             }
         });
 
         if(!location) {
-            return NextResponse.json({ error: "Location does not exist." }, { status: 400});
+            return NextResponse.json({ error: "Location does not exist." }, { status: 400 });
         }
 
         // realistcally this would not be needed to be included, but i dont have auth setup yet
@@ -45,15 +44,14 @@ export async function POST(req: NextRequest) {
         });
 
         if(!user) {
-            return NextResponse.json({ error: "User does not exist." }, { status: 400});
+            return NextResponse.json({ error: "User does not exist." }, { status: 400 });
         }
-
 
         const review = await prisma.review.create({
             data: {
                 rating: body.rating,
                 description: body.description,
-                locationId: body.locationId,
+                locationId: locationId,
                 userId: body.userId
             }
         });
