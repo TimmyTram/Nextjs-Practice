@@ -66,3 +66,34 @@ export async function PATCH(req: NextRequest, { params }: { params: { userId: st
         { status: 200 }
     );
 }
+
+export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
+    try {
+        const userId = params.userId;
+
+        if (!userId) {
+            return NextResponse.json({ error: "No userId provided." }, { status: 400 });
+        }
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        });
+
+        if (!user) {
+            return NextResponse.json({ error: "User not found." }, { status: 404 });
+        }
+
+        return NextResponse.json({
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            role: user.role,
+            timestamp: user.timestamp,
+        });
+    } catch (error: any) {
+        console.log(`[ERROR]: Error in GET of app/api/users/[userId]/route.ts: ${error}`);
+        return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
+    }
+}

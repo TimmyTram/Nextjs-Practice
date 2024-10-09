@@ -359,3 +359,4 @@ or
 - [ ] NextAuth with roles (Credentials Provider)
 - [ ] AWS S3 Integration Prototype
 - [ ] Search filtering?
+- [ ] Add comments to each HTTP ACTION so I actually know what it does.
