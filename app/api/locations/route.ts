@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DayOfWeek, LocationType, PrismaClient } from "@prisma/client";
 
+// defining the expected data for a location
 interface LocationData {
     name: string;
     address: string;
@@ -15,11 +16,13 @@ interface LocationData {
     operatingHours: OperatingHour[];
 }
 
+// defining the expected data for operating hours
 interface OperatingHour {
     day: DayOfWeek;
     timeSlots: TimeSlot[];
 }
 
+// defining the expected data for a time slot
 interface TimeSlot {
     startTime: string;
     endTime: string;
@@ -28,7 +31,11 @@ interface TimeSlot {
 
 const prisma = new PrismaClient();
 
-// Endpoint to get all locations from the database
+/**
+ * @Endpoint - GET /api/locations
+ * @description - Fetches all locations with their operating hours.
+ * @returns - all locations with their operating hours.
+ */
 export async function GET() {
     try {
         const locations = await prisma.location.findMany({
@@ -54,7 +61,11 @@ export async function GET() {
     }
 }
 
-// Endpoint to create a new location
+/**
+ * @Endpoint - POST /api/locations
+ * @description - Creates a new location with the provided data.
+ * @returns - the newly created location.
+ */
 export async function POST(req: NextRequest) {
     try {
         const body: LocationData = await req.json();
@@ -86,6 +97,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Location already exists." }, { status: 400 });
         }
 
+        // do a transaction to create the location and its operating hours in one go
         const location = await prisma.$transaction(async (prisma) => {
             // create location
             const newLocation = await prisma.location.create({

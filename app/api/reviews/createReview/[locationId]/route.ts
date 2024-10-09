@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
+// defining the expected data for a review
 interface ReviewData {
     rating: number;
     description: string;
@@ -9,6 +10,11 @@ interface ReviewData {
 
 const prisma = new PrismaClient();
 
+/**
+ * @Endpoint - POST /api/reviews/createReview/{locationId}
+ * @description - Creates a review for a specific location.
+ * @returns - the created review.
+ */
 export async function POST(req: NextRequest, { params }: { params: { locationId: string } }) {
     try {
         const body: ReviewData = await req.json();
@@ -58,7 +64,7 @@ export async function POST(req: NextRequest, { params }: { params: { locationId:
 
         return NextResponse.json(review, { status: 201 });
     } catch (error: any) {
-        console.log(`[ERROR]: Error in POST of api/reviews/route.ts: ${error}`);
+        console.log(`[ERROR]: Error in POST of api/reviews/createReview/[locationId]/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
     }
 }

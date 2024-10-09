@@ -4,6 +4,11 @@ import { PrismaClient } from "@prisma/client";
 // allows us to connect the database.
 const prisma = new PrismaClient();
 
+/**
+ * @Endpoint - GET /api/locations/locationReview/{locationId}
+ * @description - Fetches all reviews for a specific location given its id. 
+ * @returns - all reviews for a specific location given its id.
+ */
 export async function GET(req: NextRequest, { params } : { params : { locationId : string}}) {
     try {
         const locationId = params.locationId;
@@ -36,8 +41,7 @@ export async function GET(req: NextRequest, { params } : { params : { locationId
     
         return NextResponse.json(reviews);
     } catch (error: any) {
-        console.log(`[ERROR]: Error in GET of api/locations/[locationId]/route.ts: ${error}`);
+        console.log(`[ERROR]: Error in GET of api/locations/locationReviews/[locationId]/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
-    }
-    
+    } 
 }

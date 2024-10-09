@@ -3,7 +3,11 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Endpoint to get all reviews from the database
+/**
+ * @Endpoint - GET /api/reviews
+ * @description - Fetches all reviews from the database.
+ * @returns - all reviews in the database.
+ */
 export async function GET() {
     try {
         const reviews = await prisma.review.findMany({

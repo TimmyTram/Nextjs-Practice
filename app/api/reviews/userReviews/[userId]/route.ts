@@ -4,6 +4,11 @@ import { PrismaClient } from "@prisma/client";
 // allows us to connect the database.
 const prisma = new PrismaClient();
 
+/**
+ * @Endpoint - GET /api/reviews/userReviews/{userId}
+ * @description - Fetches all reviews for a specific user given their id.
+ * @returns - all reviews for a specific user given their id.
+ */
 export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
     try {
         const userId = params.userId;

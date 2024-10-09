@@ -5,8 +5,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**
- * Fetches all bookmarks from the database along with the user who created the bookmark.
- * Endpoint - GET /api/bookmarks
+ * @Endpoint - GET /api/bookmarks
+ * @description - Fetches all bookmarks from the database.
+ * @returns - all bookmarks in the database.
  */
 export async function GET() {
     try {

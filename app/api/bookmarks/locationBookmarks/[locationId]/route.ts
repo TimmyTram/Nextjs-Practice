@@ -4,6 +4,11 @@ import { PrismaClient } from "@prisma/client";
 // allows us to connect the database.
 const prisma = new PrismaClient();
 
+/**
+ * @Endpoint - GET /api/bookmarks/locationBookmarks/{locationId}
+ * @description - Fetches all bookmarks for a specific location given its id. 
+ * @returns - all bookmarks for a specific location given its id.
+ */
 export async function GET(req: NextRequest, { params }: { params: { locationId: string } }) {
     try {
         const locationId = params.locationId;
@@ -31,7 +36,7 @@ export async function GET(req: NextRequest, { params }: { params: { locationId: 
 
         return NextResponse.json(bookmarks);
     } catch (error : any) {
-        console.log(`[ERROR]: Error in GET of api/users/[locationId]/bookmarks/route.ts: ${error}`);
+        console.log(`[ERROR]: Error in GET of api/bookmarks/locationBookmarks/[locationId]/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
     }
 }

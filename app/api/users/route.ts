@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient, Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
+// defining the expected data from client
 interface UserData {
   username: string;
   email: string;
@@ -12,7 +13,11 @@ interface UserData {
 // allows us to connect the database.
 const prisma = new PrismaClient();
 
-// Endpoint to get all users from the database
+/**
+ * @Endpoint - GET /api/users
+ * @description - Get all users in the database
+ * @returns - all users in the database
+ */
 export async function GET() {
   try {
     // we only want to return relevant information about the user (Note: We do not return the password. Bad Idea)
@@ -34,22 +39,32 @@ export async function GET() {
 }
 
 
-// Endpoint to create a new user | Notice the paramter req: NextRequest is the object that contains the request information
+/**
+ * @Endpoint - POST /api/users
+ * @param - See Interface UserData
+ * @description - Create a new user
+ * @returns - the user that was created
+ */
 export async function POST(req: NextRequest) {
   try {
+    // Get all data from the request body using the format we defined in the interface
     const body: UserData = await req.json();
+    
+    // role is not required. If not provided, default to 'USER'
     const requiredFields: (keyof UserData)[] = [
       'username',
       'email',
       'password'
     ];
 
+    // Check if all required fields are provided
     const missingFields = requiredFields.filter(field => !body[field] === undefined);
 
     if (missingFields.length > 0) {
       return NextResponse.json({ error: `Missing fields: ${missingFields.join(', ')}` }, { status: 400 });
     }
 
+    // validation check to make sure the username and email are unique and not already in the database
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [{ email: body.email }, { username: body.username }],
@@ -63,6 +78,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // hash the password before storing it in the database
     const salt = await bcrypt.genSalt(10);
     const newUser = await prisma.user.create({
       data: {

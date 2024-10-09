@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
+// defining the data that is required to create a bookmark.
 interface BookmarkData {
     userId: string;
 }
@@ -8,6 +9,11 @@ interface BookmarkData {
 // allows us to connect the database.
 const prisma = new PrismaClient();
 
+/**
+ * @Endpoint - POST /api/bookmarks/createBookmark/{locationId}
+ * @description - Creates a bookmark for a specific location given its id.
+ * @returns - the newly created bookmark.
+ */
 export async function POST(req: NextRequest, { params }: { params: { locationId: string } }) {
     try {
         const body: BookmarkData = await req.json();
