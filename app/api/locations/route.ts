@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { DayOfWeek, LocationType, PrismaClient } from "@prisma/client";
 
 // defining the expected data for a location
-interface LocationData {
+export interface LocationData {
     name: string;
     address: string;
     phoneNumber: string;
@@ -17,13 +17,13 @@ interface LocationData {
 }
 
 // defining the expected data for operating hours
-interface OperatingHour {
+export interface OperatingHour {
     day: DayOfWeek;
     timeSlots: TimeSlot[];
 }
 
 // defining the expected data for a time slot
-interface TimeSlot {
+export interface TimeSlot {
     startTime: string;
     endTime: string;
 }
