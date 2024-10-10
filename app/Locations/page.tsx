@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { LocationData, OperatingHour, TimeSlot } from '../api/locations/route';
+//import { LocationData, OperatingHour } from '../api/locations/route';
 
 const Page = () => {
     const [formData, setFormData] = useState({
@@ -11,9 +11,7 @@ const Page = () => {
         seatingCapacity: 0,
         category: '',
         animalFriendliness: false,
-        operatingHours: [
-            { day: '', timeSlots: [{ startTime: '', endTime: '' }] }
-        ]
+        operatingHours: []
     });
 
 
@@ -128,57 +126,7 @@ const Page = () => {
             </div>
 
 
-            <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-700">Operating Hours:</label>
-
-                {['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'].map((day, index) => (
-                    <div key={index} className="space-y-2">
-                        <label className="block text-sm font-semibold text-gray-700">{day}:</label>
-
-                        <div className="flex space-x-4">
-                            {/* Start Time Input */}
-                            <div className="flex flex-col">
-                                <label htmlFor={`startTime-${day}`} className="text-sm">Start Time:</label>
-                                <input
-                                    type="time"
-                                    id={`startTime-${day}`}
-                                    className="w-full p-2 border border-gray-300 rounded-md text-black"
-                                    value={formData.operatingHours[index]?.timeSlots[0]?.startTime || ""}
-                                    onChange={(e) => {
-                                        const newOperatingHours = [...formData.operatingHours];
-                                        newOperatingHours[index] = {
-                                            ...newOperatingHours[index],
-                                            day,
-                                            timeSlots: [{ ...newOperatingHours[index]?.timeSlots?.[0], startTime: e.target.value }]
-                                        };
-                                        setFormData({ ...formData, operatingHours: newOperatingHours });
-                                    }}
-                                />
-                            </div>
-
-                            {/* End Time Input */}
-                            <div className="flex flex-col">
-                                <label htmlFor={`endTime-${day}`} className="text-sm">End Time:</label>
-                                <input
-                                    type="time"
-                                    id={`endTime-${day}`}
-                                    className="w-full p-2 border border-gray-300 rounded-md text-black"
-                                    value={formData.operatingHours[index]?.timeSlots[0]?.endTime || ""}
-                                    onChange={(e) => {
-                                        const newOperatingHours = [...formData.operatingHours];
-                                        newOperatingHours[index] = {
-                                            ...newOperatingHours[index],
-                                            day,
-                                            timeSlots: [{ ...newOperatingHours[index]?.timeSlots?.[0], endTime: e.target.value }]
-                                        };
-                                        setFormData({ ...formData, operatingHours: newOperatingHours });
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            
 
             <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
                 Submit

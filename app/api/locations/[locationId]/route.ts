@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: { locationId :
         if(!locationId) {
             return NextResponse.json({ error: "No locationId provided." }, { status: 400});
         }
-
+        
         const location = await prisma.location.findUnique({
             where: {
                 id: locationId
@@ -24,12 +24,8 @@ export async function GET(req: NextRequest, { params }: { params: { locationId :
                 operatingHours: {
                     select: {
                         day: true,
-                        timeSlots: {
-                            select: {
-                                startTime: true,
-                                endTime: true
-                            }
-                        }
+                        openTime: true,
+                        closeTime: true
                     }
                 }
             }

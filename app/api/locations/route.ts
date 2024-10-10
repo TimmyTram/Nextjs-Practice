@@ -12,6 +12,7 @@ export interface LocationData {
     rating: number;
     busynessStatus: number;
     imageWebLink: string;
+    locationWebsiteLink: string;
     animalFriendliness: boolean;
     operatingHours: OperatingHour[];
 }
@@ -19,15 +20,9 @@ export interface LocationData {
 // defining the expected data for operating hours
 export interface OperatingHour {
     day: DayOfWeek;
-    timeSlots: TimeSlot[];
+    openTime: string;
+    closeTime: string;
 }
-
-// defining the expected data for a time slot
-export interface TimeSlot {
-    startTime: string;
-    endTime: string;
-}
-
 
 const prisma = new PrismaClient();
 
@@ -43,17 +38,12 @@ export async function GET() {
                 operatingHours: {
                     select: {
                         day: true,
-                        timeSlots: {
-                            select: {
-                                startTime: true,
-                                endTime: true
-                            }
-                        }
+                        openTime: true,
+                        closeTime: true
                     }
                 }
             }
         });
-
         return NextResponse.json(locations);
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/locations/route.ts: ${error}`);
@@ -80,11 +70,14 @@ export async function POST(req: NextRequest) {
             'operatingHours'
         ];
 
-
         const missingFields = requiredFields.filter(field => !body[field] === undefined);
 
         if (missingFields.length > 0) {
             return NextResponse.json({ error: `Missing fields: ${missingFields.join(', ')}` }, { status: 400 });
+        }
+
+        if(body.operatingHours.length === 0) {
+            return NextResponse.json({ error: "No operating hours provided." }, { status: 400 });
         }
 
         const existingLocation = await prisma.location.findFirst({
@@ -97,7 +90,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Location already exists." }, { status: 400 });
         }
 
-        // do a transaction to create the location and its operating hours in one go
+        
+
+        //do a transaction to create the location and its operating hours in one go
         const location = await prisma.$transaction(async (prisma) => {
             // create location
             const newLocation = await prisma.location.create({
@@ -111,25 +106,22 @@ export async function POST(req: NextRequest) {
                     rating: body.rating,
                     busynessStatus: body.busynessStatus,
                     imageWebLink: body.imageWebLink,
+                    locationWebsiteLink: body.locationWebsiteLink,
                     animalFriendliness: body.animalFriendliness
                 }
             })
 
-            // create operating hours
-            for(const operatingHour of body.operatingHours) {
-                const createdOperatingHour = await prisma.operatingHours.create({
+            for (const operatingHour of body.operatingHours) {
+                await prisma.operatingHours.create({
                     data: {
                         day: operatingHour.day,
-                        locationId: newLocation.id,
-                        timeSlots: {
-                            create: operatingHour.timeSlots.map((slot: TimeSlot) => ({
-                                startTime: slot.startTime,
-                                endTime: slot.endTime
-                            }))
-                        }
+                        openTime: operatingHour.openTime,
+                        closeTime: operatingHour.closeTime,
+                        locationId: newLocation.id
                     }
                 });
             }
+
             return newLocation;
         });
 
