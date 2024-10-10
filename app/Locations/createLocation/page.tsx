@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-//import { LocationData, OperatingHour } from '../api/locations/route';
+import { DayOfWeek } from '@prisma/client';
 
 const Page = () => {
     const [formData, setFormData] = useState({
@@ -11,7 +11,16 @@ const Page = () => {
         seatingCapacity: 0,
         category: '',
         animalFriendliness: false,
-        operatingHours: []
+        locationWebsiteLink: '',
+        operatingHours: [
+            { day: DayOfWeek.MONDAY, openTime: '', closeTime: '' },
+            { day: DayOfWeek.TUESDAY, openTime: '', closeTime: '' },
+            { day: DayOfWeek.WEDNESDAY, openTime: '', closeTime: '' },
+            { day: DayOfWeek.THURSDAY, openTime: '', closeTime: '' },
+            { day: DayOfWeek.FRIDAY, openTime: '', closeTime: '' },
+            { day: DayOfWeek.SATURDAY, openTime: '', closeTime: '' },
+            { day: DayOfWeek.SUNDAY, openTime: '', closeTime: '' }
+        ]
     });
 
 
@@ -125,8 +134,50 @@ const Page = () => {
                 />
             </div>
 
-            
-            
+            <div className="space-y-2">
+                <label htmlFor="locationWebsiteLink" className="block text-sm font-medium text-gray-700">Location Website Link:</label>
+                <input
+                    type="text"
+                    id="locationWebsiteLink"
+                    className="w-full p-2 border border-gray-300 rounded-md text-black"
+                    value={formData.locationWebsiteLink}
+                    onChange={(e) => setFormData({ ...formData, locationWebsiteLink: e.target.value })}
+                />
+            </div>
+
+
+            {formData.operatingHours.map((operatingHour, index) => (
+                <div key={operatingHour.day} className="space-y-2">
+                    <label htmlFor={`openTime-${index}`} className="block text-sm font-medium text-gray-700">{operatingHour.day} Open Time:</label>
+                    <input
+                        type="time"
+                        id={`openTime-${index}`}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black"
+                        value={operatingHour.openTime}
+                        onChange={(e) => {
+                            const newOperatingHours = [...formData.operatingHours];
+                            newOperatingHours[index].openTime = e.target.value;
+                            setFormData({ ...formData, operatingHours: newOperatingHours });
+                        }}
+                    />
+
+                    <label htmlFor={`closeTime-${index}`} className="block text-sm font-medium text-gray-700">{operatingHour.day} Close Time:</label>
+                    <input
+                        type="time"
+                        id={`closeTime-${index}`}
+                        className="w-full p-2 border border-gray-300 rounded-md text-black"
+                        value={operatingHour.closeTime}
+                        onChange={(e) => {
+                            const newOperatingHours = [...formData.operatingHours];
+                            newOperatingHours[index].closeTime = e.target.value;
+                            setFormData({ ...formData, operatingHours: newOperatingHours });
+                        }}
+                    />
+                </div>
+            ))}
+
+
+
 
             <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
                 Submit

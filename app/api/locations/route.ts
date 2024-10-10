@@ -112,6 +112,7 @@ export async function POST(req: NextRequest) {
             })
 
             for (const operatingHour of body.operatingHours) {
+                console.log("[DEBUG]: ", operatingHour);
                 await prisma.operatingHours.create({
                     data: {
                         day: operatingHour.day,

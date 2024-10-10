@@ -1,4 +1,5 @@
 export const convertTo12HourFormat = (time: string) => {
+    if(time.length === 0) return 'CLOSED';
     const [hour, minute] = time.split(':');
     let hourNum = parseInt(hour);
     const ampm = hourNum >= 12 ? 'PM' : 'AM';
