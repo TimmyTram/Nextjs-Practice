@@ -34,7 +34,7 @@ This repository serves as practice and reference for creating a backend in NextJ
 7. Run in terminal `npm run dev`
 
 
-## List of Endpoints (Last updated 10/9/2024):
+## List of Endpoints (Last updated 10/10/2024):
 
 ### Users:
 
@@ -129,85 +129,7 @@ or
 ```json
 [
 	{
-		"id": "67057c9456fb50ebee89d8d1",
-		"name": "J. Paul Leonard Library",
-		"address": "1630 Holloway Ave, San Francisco, CA 94132",
-		"phoneNumber": "(415) 338-1854",
-		"hasWifi": true,
-		"seatingCapacity": 648,
-		"category": "LIBRARY",
-		"rating": 0,
-		"busynessStatus": 0,
-		"imageWebLink": "N/A",
-		"animalFriendliness": false,
-		"operatingHours": [
-			{
-				"day": "MONDAY",
-				"timeSlots": [
-					{
-						"startTime": "7:00 AM",
-						"endTime": "11:00 PM"
-					}
-				]
-			},
-			{
-				"day": "TUESDAY",
-				"timeSlots": [
-					{
-						"startTime": "7:00 AM",
-						"endTime": "11:00 PM"
-					}
-				]
-			},
-			{
-				"day": "WEDNESDAY",
-				"timeSlots": [
-					{
-						"startTime": "7:00 AM",
-						"endTime": "11:00 PM"
-					}
-				]
-			},
-			{
-				"day": "THURSDAY",
-				"timeSlots": [
-					{
-						"startTime": "7:00 AM",
-						"endTime": "11:00 PM"
-					}
-				]
-			},
-			{
-				"day": "FRIDAY",
-				"timeSlots": [
-					{
-						"startTime": "7:00 AM",
-						"endTime": "7:00 PM"
-					}
-				]
-			},
-			{
-				"day": "SATURDAY",
-				"timeSlots": [
-					{
-						"startTime": "12:00 PM",
-						"endTime": "6:00 PM"
-					}
-				]
-			},
-			{
-				"day": "SUNDAY",
-				"timeSlots": [
-					{
-						"startTime": "12:00 PM",
-						"endTime": "6:00 PM"
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "6706aa607744db33d0d476f8",
+		"id": "location-id",
 		"name": "San Francisco Public Library",
 		"address": "100 Larkin St, San Francisco, CA 94102",
 		"phoneNumber": "(415) 557-4400",
@@ -217,70 +139,94 @@ or
 		"rating": 0,
 		"busynessStatus": 0,
 		"imageWebLink": "N/A",
+		"locationWebsiteLink": "https://sfpl.org/locations/main-library",
 		"animalFriendliness": false,
 		"operatingHours": [
 			{
 				"day": "MONDAY",
-				"timeSlots": [
-					{
-						"startTime": "9:00 AM",
-						"endTime": "6:00 PM"
-					}
-				]
+				"openTime": "09:00",
+				"closeTime": "18:00"
 			},
 			{
 				"day": "TUESDAY",
-				"timeSlots": [
-					{
-						"startTime": "9:00 AM",
-						"endTime": "8:00 PM"
-					}
-				]
+				"openTime": "09:00",
+				"closeTime": "20:00"
 			},
 			{
 				"day": "WEDNESDAY",
-				"timeSlots": [
-					{
-						"startTime": "9:00 AM",
-						"endTime": "8:00 PM"
-					}
-				]
+				"openTime": "09:00",
+				"closeTime": "20:00"
 			},
 			{
 				"day": "THURSDAY",
-				"timeSlots": [
-					{
-						"startTime": "9:00 AM",
-						"endTime": "8:00 PM"
-					}
-				]
+				"openTime": "09:00",
+				"closeTime": "20:00"
 			},
 			{
 				"day": "FRIDAY",
-				"timeSlots": [
-					{
-						"startTime": "12:00 PM",
-						"endTime": "6:00 PM"
-					}
-				]
+				"openTime": "12:00",
+				"closeTime": "18:00"
 			},
 			{
 				"day": "SATURDAY",
-				"timeSlots": [
-					{
-						"startTime": "10:00 AM",
-						"endTime": "6:00 PM"
-					}
-				]
+				"openTime": "10:00",
+				"closeTime": "18:00"
 			},
 			{
 				"day": "SUNDAY",
-				"timeSlots": [
-					{
-						"startTime": "12:00 PM",
-						"endTime": "6:00 PM"
-					}
-				]
+				"openTime": "12:00",
+				"closeTime": "18:00"
+			}
+		]
+	},
+	{
+		"id": "location-id",
+		"name": "San Francisco State University J. Paul Leonard Library",
+		"address": "1630 Holloway Ave, San Francisco, CA 94132",
+		"phoneNumber": "(415) 338-1854",
+		"hasWifi": true,
+		"seatingCapacity": 648,
+		"category": "LIBRARY",
+		"rating": 0,
+		"busynessStatus": 0,
+		"imageWebLink": "N/A",
+		"locationWebsiteLink": "https://library.sfsu.edu/",
+		"animalFriendliness": false,
+		"operatingHours": [
+			{
+				"day": "MONDAY",
+				"openTime": "07:00",
+				"closeTime": "23:00"
+			},
+			{
+				"day": "TUESDAY",
+				"openTime": "07:00",
+				"closeTime": "23:00"
+			},
+			{
+				"day": "WEDNESDAY",
+				"openTime": "07:00",
+				"closeTime": "23:00"
+			},
+			{
+				"day": "THURSDAY",
+				"openTime": "07:00",
+				"closeTime": "23:00"
+			},
+			{
+				"day": "FRIDAY",
+				"openTime": "07:00",
+				"closeTime": "07:00"
+			},
+			{
+				"day": "SATURDAY",
+				"openTime": "12:00",
+				"closeTime": "18:00"
+			},
+			{
+				"day": "SUNDAY",
+				"openTime": "12:00",
+				"closeTime": "18:00"
 			}
 		]
 	}
@@ -293,83 +239,56 @@ or
 **Response Body:**
 ```json
 {
-	"id": "6706aa607744db33d0d476f8",
-	"name": "San Francisco Public Library",
-	"address": "100 Larkin St, San Francisco, CA 94102",
-	"phoneNumber": "(415) 557-4400",
-	"hasWifi": true,
-	"seatingCapacity": 1000,
-	"category": "LIBRARY",
-	"rating": 0,
-	"busynessStatus": 0,
-	"imageWebLink": "N/A",
-	"animalFriendliness": false,
-	"operatingHours": [
-		{
-			"day": "MONDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "6:00 PM"
-				}
-			]
-		},
-		{
-			"day": "TUESDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "8:00 PM"
-				}
-			]
-		},
-		{
-			"day": "WEDNESDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "8:00 PM"
-				}
-			]
-		},
-		{
-			"day": "THURSDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "8:00 PM"
-				}
-			]
-		},
-		{
-			"day": "FRIDAY",
-			"timeSlots": [
-				{
-					"startTime": "12:00 PM",
-					"endTime": "6:00 PM"
-				}
-			]
-		},
-		{
-			"day": "SATURDAY",
-			"timeSlots": [
-				{
-					"startTime": "10:00 AM",
-					"endTime": "6:00 PM"
-				}
-			]
-		},
-		{
-			"day": "SUNDAY",
-			"timeSlots": [
-				{
-					"startTime": "12:00 PM",
-					"endTime": "6:00 PM"
-				}
-			]
-		}
-	]
-}
+		"id": "location-id",
+		"name": "San Francisco Public Library",
+		"address": "100 Larkin St, San Francisco, CA 94102",
+		"phoneNumber": "(415) 557-4400",
+		"hasWifi": true,
+		"seatingCapacity": 1000,
+		"category": "LIBRARY",
+		"rating": 0,
+		"busynessStatus": 0,
+		"imageWebLink": "N/A",
+		"locationWebsiteLink": "https://sfpl.org/locations/main-library",
+		"animalFriendliness": false,
+		"operatingHours": [
+			{
+				"day": "MONDAY",
+				"openTime": "09:00",
+				"closeTime": "18:00"
+			},
+			{
+				"day": "TUESDAY",
+				"openTime": "09:00",
+				"closeTime": "20:00"
+			},
+			{
+				"day": "WEDNESDAY",
+				"openTime": "09:00",
+				"closeTime": "20:00"
+			},
+			{
+				"day": "THURSDAY",
+				"openTime": "09:00",
+				"closeTime": "20:00"
+			},
+			{
+				"day": "FRIDAY",
+				"openTime": "12:00",
+				"closeTime": "18:00"
+			},
+			{
+				"day": "SATURDAY",
+				"openTime": "10:00",
+				"closeTime": "18:00"
+			},
+			{
+				"day": "SUNDAY",
+				"openTime": "12:00",
+				"closeTime": "18:00"
+			}
+		]
+	}
 ```
 
 #### Location POST Endpoints
@@ -380,76 +299,49 @@ or
 **Request Body:** 
 ```json
 {
-    "name": "San Francisco Public Library",
-	"address": "100 Larkin St, San Francisco, CA 94102",
-	"phoneNumber": "(415) 557-4400",
+    "name": "San Francisco State University J. Paul Leonard Library",
+	"address": "1630 Holloway Ave, San Francisco, CA 94132",
+	"phoneNumber": "(415) 338-1854",
 	"hasWifi": true,
-	"seatingCapacity": 1000,
+	"seatingCapacity": 648,
 	"category": "LIBRARY",
 	"animalFriendliness": false,
+	"locationWebsiteLink": "https://library.sfsu.edu/",
 	"operatingHours": [
 		{
 			"day": "MONDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "6:00 PM"
-				}
-			]
+			"openTime": "07:00",
+			"closeTime": "23:00"
 		},
 		{
 			"day": "TUESDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "8:00 PM"
-				}
-			]
+			"openTime": "07:00",
+			"closeTime": "23:00"
 		},
 		{
 			"day": "WEDNESDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "8:00 PM"
-				}
-			]
+			"openTime": "07:00",
+			"closeTime": "23:00"
 		},
 		{
 			"day": "THURSDAY",
-			"timeSlots": [
-				{
-					"startTime": "9:00 AM",
-					"endTime": "8:00 PM"
-				}
-			]
+			"openTime": "07:00",
+			"closeTime": "23:00"
 		},
 		{
 			"day": "FRIDAY",
-			"timeSlots": [
-				{
-					"startTime": "12:00 PM",
-					"endTime": "6:00 PM"
-				}
-			]
+			"openTime": "07:00",
+			"closeTime": "07:00"
 		},
 		{
 			"day": "SATURDAY",
-			"timeSlots": [
-				{
-					"startTime": "10:00 AM",
-					"endTime": "6:00 PM"
-				}
-			]
+			"openTime": "12:00",
+			"closeTime": "18:00"
 		},
 		{
 			"day": "SUNDAY",
-			"timeSlots": [
-				{
-					"startTime": "12:00 PM",
-					"endTime": "6:00 PM"
-				}
-			]
+			"openTime": "12:00",
+			"closeTime": "18:00"
 		}
 	]
 }
@@ -659,5 +551,5 @@ or
 
 ### TODO:
 - [ ] NextAuth with roles (Credentials Provider)
-- [ ] AWS S3 Integration Prototype
+- [ ] AWS S3 Integration Prototype <-- Might need to handle this on frontend side and not the backend due to Vercel as web server.
 - [ ] Search filtering?
