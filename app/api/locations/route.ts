@@ -40,6 +40,11 @@ export async function GET() {
                         day: true,
                         openTime: true,
                         closeTime: true
+                    },
+                    orderBy: { 
+                        // Need to order the operating hours by day of the week, starting from Monday
+                        // One would think we would do this by day: 'asc', but that doesn't work
+                        id: 'asc'
                     }
                 }
             }
