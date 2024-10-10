@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from 'react';
+import useUserData from "../hooks/useUserData";
 
 interface User {
     id: string;
@@ -9,34 +9,9 @@ interface User {
 }
 
 const Page = () => {
-    const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { users, loading, error } = useUserData();
 
-
-    // should move this to its own folder called /hooks
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await fetch('/api/users');
-                setLoading(true);
-                if(!response.ok) {
-                    throw new Error('Failed to fetch users');
-                }
-                const data = await response.json();
-                setUsers(data);
-            } catch(err: any) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUsers();
-    }, []);
-
-
-    if(loading) {
+    if (loading) {
         return <div>Loading . . .</div>
     }
 
@@ -44,17 +19,19 @@ const Page = () => {
         return <div>Error: {error}</div>;
     }
 
-    
     return (
-        <div className="p-5">
-            <h1 className="py-5">Users</h1>
+        <div className="p-6 bg-black min-h-screen">
+            <h1 className="text-3xl font-bold text-white mb-6">Users</h1>
 
-            <ul>
-                {users.map((user) => (
-                    <li key={user.id}>
-                        <p>Username: {user.username}</p>
-                        <p>Email: {user.email}</p>
-                        <p>Joined: {new Date(user.timestamp).toLocaleDateString()}</p>
+            <ul className="space-y-6">
+                {users.map((user: User) => (
+                    <li
+                        key={user.id}
+                        className="p-5 bg-gray-800 shadow-md rounded-lg border border-gray-700"
+                    >
+                        <p className="text-lg font-semibold text-white mb-2">Username: {user.username}</p>
+                        <p className="text-gray-300 mb-1">Email: {user.email}</p>
+                        <p className="text-gray-400">Joined: {new Date(user.timestamp).toLocaleDateString()}</p>
                     </li>
                 ))}
             </ul>
