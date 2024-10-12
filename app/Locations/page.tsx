@@ -3,6 +3,7 @@
 import useLocationData from "../hooks/useLocationData";
 import { DayOfWeek, LocationType } from "@prisma/client";
 import { convertTo12HourFormat } from "../utils/utils";
+import Link from "next/link";
 
 interface Location {
     id: string;
@@ -43,6 +44,10 @@ const Page = () => {
             <ul className="space-y-8">
                 {locations.map((location: Location) => (
                     <li key={location.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+
+                        <Link href={`/Locations/${location.id}`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View Details</Link>
+
+
                         <h2 className="text-2xl font-semibold mb-2">{location.name}</h2>
                         <p className="text-gray-300 mb-1"><span className="font-medium">Address:</span> {location.address}</p>
                         <p className="text-gray-300 mb-1"><span className="font-medium">Phone:</span> {location.phoneNumber}</p>
