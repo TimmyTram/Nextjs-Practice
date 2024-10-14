@@ -5,7 +5,7 @@ interface User {
     id: string;
     username: string;
     email: string;
-    timestamp: string;
+    creationDate: string;
 }
 
 const Page = () => {
@@ -31,7 +31,7 @@ const Page = () => {
                     >
                         <p className="text-lg font-semibold text-white mb-2">Username: {user.username}</p>
                         <p className="text-gray-300 mb-1">Email: {user.email}</p>
-                        <p className="text-gray-400">Joined: {new Date(user.timestamp).toLocaleDateString()}</p>
+                        <p className="text-gray-400">Joined: {new Date(user.creationDate).toLocaleDateString()}</p>
                     </li>
                 ))}
             </ul>

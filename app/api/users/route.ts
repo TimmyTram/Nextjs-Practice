@@ -27,7 +27,7 @@ export async function GET() {
         username: true,
         email: true,
         role: true,
-        timestamp: true,
+        creationDate: true,
       },
     });
 
@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
     // role is not required. If not provided, default to 'USER'
     const requiredFields: (keyof UserData)[] = [
       'username',
-      'email',
       'password'
     ];
 
@@ -88,12 +87,17 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // create user settings for this user
+    await prisma.userSettings.create({
+      data: { id: newUser.id }
+    });
+
     return NextResponse.json(
       {
         username: newUser.username,
         email: newUser.email,
         role: newUser.role,
-        createdAt: newUser.timestamp,
+        creationDate: newUser.creationDate,
       },
       { status: 201 }
     );

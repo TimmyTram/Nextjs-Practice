@@ -21,7 +21,7 @@ export async function GET() {
                         email: true
                     }
                 },
-                createdAt: true
+                creationDate: true
             }
         });
 

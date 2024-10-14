@@ -15,7 +15,7 @@ export async function GET() {
                 id: true,
                 rating: true,
                 description: true,
-                timestamp: true
+                creationDate: true
             }
         });
 
