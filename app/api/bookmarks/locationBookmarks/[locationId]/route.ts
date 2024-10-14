@@ -26,7 +26,7 @@ export async function GET(req: NextRequest, { params }: { params: { locationId: 
                         email: true
                     }
                 },
-                createdAt: true
+                creationDate: true
             }
         });
 

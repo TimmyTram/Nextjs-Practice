@@ -16,28 +16,32 @@ datasource db {
 model User {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   username  String @unique
-  email String @unique
+  email String? @unique @default("N/A")
   password String
   role Role @default(CUSTOMER)
-  timestamp DateTime @default(now())
+  creationDate DateTime @default(now())
 
   // User can own multiple reviews
   reviews Review[]
   bookmarks Bookmark[]
+
+  // 1-1
+  settings UserSettings? @relation(fields: [settingsId], references: [id])
+  settingsId String? @unique @db.ObjectId
 }
 
 model Location {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   address String @unique
-  phoneNumber String
+  phoneNumber String? @default("N/A")
   hasWifi Boolean
-  seatingCapacity Int
+  seatingCapacity Int? @default(-1)
   category LocationType
   rating Float @default(0)
   busynessStatus Float @default(0)
-  imageWebLink String @default("N/A")
-  locationWebsiteLink String @default("N/A")
+  imageWebLink String? @default("N/A")
+  locationWebsiteLink String? @default("N/A")
   animalFriendliness Boolean
 
   // A Location can have many reviews
@@ -59,8 +63,8 @@ model Review {
   location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
   locationId String @db.ObjectId
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @db.ObjectId
-  timestamp DateTime @default(now())
+  userId String @unique @db.ObjectId
+  creationDate DateTime @default(now())
 }
 
 model OperatingHours {
@@ -81,11 +85,20 @@ model Bookmark {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @db.ObjectId
   locationId String @db.ObjectId
-  createdAt DateTime @default(now())
+  creationDate DateTime @default(now())
 
   // Relationships
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+}
+
+model UserSettings {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  
+  darkMode Boolean @default(false)
+  notifications Boolean @default(false)
+ 
+  user User? @relation
 }
 
 // Enums
@@ -101,6 +114,7 @@ enum DayOfWeek {
 
 enum Role {
   ADMIN
+  MODERATOR
   BUSINESS_OWNER
   CUSTOMER
 }

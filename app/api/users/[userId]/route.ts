@@ -7,20 +7,20 @@ const prisma = new PrismaClient();
 
 /**
  * @Endpoint - PATCH /api/users/{userId}
- * @description - Edit a user's data (email, password)
+ * @description - Edit a user's data (email, password, settings)
  * @returns - the user that was edited.
  */
 export async function PATCH(req: NextRequest, { params }: { params: { userId: string } }) {
     try {
-        const { email, password } = await req.json();
+        const { email, password, settings } = await req.json();
         const userId = params.userId;
 
         if (!userId) {
             return NextResponse.json({ error: "No userId provided." }, { status: 400 });
         }
 
-        if (!email && !password) {
-            return NextResponse.json({ error: "No email or password provided." }, { status: 400 });
+        if (!email && !password && !settings) {
+            return NextResponse.json({ error: "No email or password or settings provided." }, { status: 400 });
         }
 
         const user = await prisma.user.findUnique({
@@ -47,11 +47,21 @@ export async function PATCH(req: NextRequest, { params }: { params: { userId: st
             updateData.email = email;
         }
 
-
         if (password) {
             const salt = bcrypt.genSaltSync(10);
             const hashedPassword = bcrypt.hashSync(password, salt);
             updateData.password = hashedPassword;
+        }
+
+        let updatedSettings = {};
+
+        if(settings) {
+            updatedSettings = await prisma.userSettings.update({
+                where: {
+                    id: userId
+                },
+                data: settings
+            });
         }
 
         const updatedUser = await prisma.user.update({
@@ -61,12 +71,14 @@ export async function PATCH(req: NextRequest, { params }: { params: { userId: st
             data: updateData
         });
 
+
         return NextResponse.json({
             "message": "User updated successfully.",
             updatedUser: {
                 id: updatedUser.id,
                 email: updatedUser.email,
                 username: updatedUser.username,
+                settings: updatedSettings
             },
         },
             { status: 200 }
@@ -93,19 +105,27 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
         const user = await prisma.user.findUnique({
             where: {
                 id: userId
-            }
+            },
+            include: { settings: true }
         });
 
         if (!user) {
             return NextResponse.json({ error: "User not found." }, { status: 404 });
         }
 
+        const userSettings = await prisma.userSettings.findUnique({
+            where: {
+                id: userId
+            }
+        });
+
         return NextResponse.json({
             id: user.id,
             email: user.email,
             username: user.username,
             role: user.role,
-            timestamp: user.timestamp,
+            creationDate: user.creationDate,
+            settings: userSettings
         });
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/users/[userId]/route.ts: ${error}`);

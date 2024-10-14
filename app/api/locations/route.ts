@@ -67,9 +67,7 @@ export async function POST(req: NextRequest) {
         const requiredFields: (keyof LocationData)[] = [
             'name',
             'address',
-            'phoneNumber',
             'hasWifi',
-            'seatingCapacity',
             'category',
             'animalFriendliness',
             'operatingHours'
@@ -117,7 +115,6 @@ export async function POST(req: NextRequest) {
             })
 
             for (const operatingHour of body.operatingHours) {
-                console.log("[DEBUG]: ", operatingHour);
                 await prisma.operatingHours.create({
                     data: {
                         day: operatingHour.day,
