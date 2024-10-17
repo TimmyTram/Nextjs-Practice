@@ -14,27 +14,17 @@ export const authOptions: AuthOptions = {
                 password: { label: "Password", type: "password", required: true }
             },
             async authorize(credentials) {
-                console.log("[INFO]: ", credentials)
-
-
                 const { username, password } = credentials ?? {};
-                
-
-
                 if (!username || !password) {
                     throw new Error("Missing credentials");
                 }
 
-                const user = await prisma.user.findFirst({
-                    where: { username }
-                });
-
+                const user = await prisma.user.findFirst({ where: { username } });
                 if (!user) {
                     throw new Error("User not found");
                 }
 
                 const isValidPassword = await bcrypt.compare(password, user.password);
-
                 if (!isValidPassword) {
                     throw new Error("Invalid password");
                 }
@@ -50,7 +40,7 @@ export const authOptions: AuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }) {
-            if(user) {
+            if (user) {
                 token.role = user.role;
                 token.username = user.username;
             }
