@@ -1,4 +1,3 @@
-'use client'
 import { convertTo12HourFormat } from "../../utils/utils";
 
 
