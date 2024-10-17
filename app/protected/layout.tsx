@@ -7,6 +7,9 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+
+  // should wrap SessionProvider around pages that require authentication?
   return (
     <SessionProvider>
       <div>{children}</div>
