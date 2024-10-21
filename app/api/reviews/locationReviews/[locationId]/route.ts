@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params } : { params : { locationId
             select: {
                 id: true,
                 rating: true,
-                description: true,
+                content: true,
                 creationDate: true,
                 user: {
                     select: {
