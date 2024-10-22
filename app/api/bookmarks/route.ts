@@ -26,7 +26,7 @@ export async function GET() {
             return NextResponse.json({ error: 'No bookmarks found.' }, { status: 200 });
         }
 
-        return NextResponse.json(bookmarks);
+        return NextResponse.json(bookmarks, { headers: { 'Cache-Control': 'no-store' } });
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/bookmarks/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });

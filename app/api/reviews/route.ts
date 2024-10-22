@@ -17,7 +17,7 @@ export async function GET() {
             }
         });
 
-        return NextResponse.json(reviews);
+        return NextResponse.json(reviews, { headers: { 'Cache-Control': 'no-store' } });
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/reviews/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });

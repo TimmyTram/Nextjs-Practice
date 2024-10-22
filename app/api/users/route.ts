@@ -29,7 +29,7 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json(users, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error: any) {
     console.log(`[ERROR]: Error in GET of api/users/route.ts: ${error}`);
     return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   try {
     // Get all data from the request body using the format we defined in the interface
     const body: UserData = await req.json();
-    
+
     // role is not required. If not provided, default to 'USER'
     const requiredFields: (keyof UserData)[] = [
       'username',
