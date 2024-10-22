@@ -1,6 +1,8 @@
 import { convertTo12HourFormat } from "../utils/utils";
 import { DayOfWeek, LocationType } from "@prisma/client";
 
+export const dynamic = 'force-dynamic';
+
 /**
  * NOTE: THIS FILE AND FOLDER IS FOR THE VERTICAL PROTOTYPE ONLY, AND WILL BE REMOVED IN THE FINAL PRODUCT.
  * USE THIS AS A REFERENCE FOR HOW TO FETCH DATA FROM THE API AND DISPLAY IT ON A PAGE.
