@@ -9,7 +9,23 @@ import prisma from "../../../prisma/prisma";
  */
 export async function GET(request: NextRequest) {
     try {
+
+        const { searchParams } = new URL(request.url);
+        const locationId = searchParams.get('locationId');
+        const userId = searchParams.get('userId');
+
+        const whereCondition: any = {};
+
+        if (locationId) {
+            whereCondition.locationId = locationId;
+        }
+
+        if (userId) {
+            whereCondition.userId = userId;
+        }
+
         const bookmarks = await prisma.bookmark.findMany({
+            where: whereCondition,
             select: {
                 id: true,
                 user: {
