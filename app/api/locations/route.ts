@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { DayOfWeek, LocationType } from "@prisma/client";
 import prisma from "../../../prisma/prisma";
 
-export const fetchCache = 'no-store';
+export const fetchCache = 'default-no-store';
 
 // defining the expected data for a location
 export interface LocationData {

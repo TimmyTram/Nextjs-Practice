@@ -3,7 +3,7 @@ import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import prisma from "../../../prisma/prisma";
 
-export const fetchCache = 'no-store';
+export const fetchCache = 'default-no-store';
 
 // defining the expected data from client
 interface UserData {

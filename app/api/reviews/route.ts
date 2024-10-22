@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../prisma/prisma";
 
-export const fetchCache = 'no-store';
+export const fetchCache = 'default-no-store';
 
 /**
  * @Endpoint - GET /api/reviews
