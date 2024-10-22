@@ -71,10 +71,10 @@ async function fetchData<T>(endpoint: string): Promise<T | null> {
 }
 
 const Page = async () => {
-    const locations = await fetchData<Location[]>('/api/location');
-    const users = await fetchData<User[]>('/api/user');
-    const reviews = await fetchData<Review[]>('/api/review');
-    const bookmarks = await fetchData<Bookmark[]>('/api/bookmark');
+    const locations = await fetchData<Location[]>('/api/locations');
+    const users = await fetchData<User[]>('/api/users');
+    const reviews = await fetchData<Review[]>('/api/reviews');
+    const bookmarks = await fetchData<Bookmark[]>('/api/bookmarks');
     
     return (
         <div>
