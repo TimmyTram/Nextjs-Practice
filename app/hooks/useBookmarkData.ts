@@ -8,7 +8,7 @@ const useBookmarkData = () => {
     useEffect(() => {
         const fetchBookmarks = async () => {
             try {
-                const response = await fetch('/api/bookmarks');
+                const response = await fetch('/api/bookmarks', { cache: 'no-store' });
                 setLoading(true);
                 if (!response.ok) {
                     throw new Error('Failed to fetch bookmarks');

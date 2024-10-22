@@ -8,7 +8,7 @@ const useUserData = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('/api/users');
+                const response = await fetch('/api/users', { cache: 'no-store' });
                 setLoading(true);
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
