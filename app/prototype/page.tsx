@@ -59,7 +59,7 @@ interface Bookmark {
 async function fetchData<T>(endpoint: string): Promise<T | null> {
     try {
         console.log(`[INFO]: Fetching data from: ${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, { next: { revalidate: 0 } });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, { cache: 'no-store', next: { revalidate: 0 } });
         if (!response.ok) {
             console.error(`[ERROR]: Failed to fetch ${endpoint}: ${response.statusText}`);
             return null;
