@@ -7,7 +7,7 @@ import prisma from "../../../prisma/prisma";
  * @description - Fetches all bookmarks from the database.
  * @returns - all bookmarks in the database.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         const bookmarks = await prisma.bookmark.findMany({
             select: {

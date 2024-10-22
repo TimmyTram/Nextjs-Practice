@@ -7,7 +7,7 @@ import prisma from "../../../prisma/prisma";
  * @description - Fetches all reviews from the database.
  * @returns - all reviews in the database.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
         const reviews = await prisma.review.findMany({
             select: {
