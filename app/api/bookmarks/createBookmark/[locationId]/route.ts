@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../../../prisma/prisma"
 
 // defining the data that is required to create a bookmark.
 interface BookmarkData {
     userId: string;
 }
-
-// allows us to connect the database.
-const prisma = new PrismaClient();
 
 /**
  * @Endpoint - POST /api/bookmarks/createBookmark/{locationId}

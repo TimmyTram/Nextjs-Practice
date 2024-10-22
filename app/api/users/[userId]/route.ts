@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-
-// allows us to connect the database.
-const prisma = new PrismaClient();
+import prisma from "../../../../prisma/prisma";
 
 /**
  * @Endpoint - PATCH /api/users/{userId}
