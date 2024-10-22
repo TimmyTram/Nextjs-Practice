@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../prisma/prisma";
 
+export const fetchCache = 'no-store';
+
 /**
  * @Endpoint - GET /api/reviews
  * @description - Fetches all reviews from the database.

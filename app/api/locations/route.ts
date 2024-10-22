@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { DayOfWeek, LocationType } from "@prisma/client";
 import prisma from "../../../prisma/prisma";
 
+export const fetchCache = 'no-store';
+
 // defining the expected data for a location
 export interface LocationData {
     name: string;
@@ -24,8 +26,6 @@ export interface OperatingHour {
     openTime: string;
     closeTime: string;
 }
-
-
 
 /**
  * @Endpoint - GET /api/locations
