@@ -50,7 +50,7 @@ export async function GET() {
                 }
             }
         });
-        return NextResponse.json(locations);
+        return NextResponse.json(locations, { headers: { 'Cache-Control': 'no-store' } });
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/locations/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
