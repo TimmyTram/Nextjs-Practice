@@ -6,9 +6,6 @@ import { DayOfWeek, LocationType } from "@prisma/client";
  * USE THIS AS A REFERENCE FOR HOW TO FETCH DATA FROM THE API AND DISPLAY IT ON A PAGE.
  */
 
-/**
- * NOTE: This page is an example of a SERVER SIDE RENDERED PAGE. THIS MEANS FETCHING DATA FROM THE API
- */
 
 // defining data we expect from the backend.
 // should probably exist in its own file, but this will do for now.
@@ -54,11 +51,15 @@ interface Bookmark {
     creationDate: string;
 }
 
-// custom generic function to fetch data from the API
+/**
+ * Generic function to fetch data from the API and does error handle plus logging.
+ * @param endpoint - the endpoint to fetch data from
+ * @returns - the data fetched from the endpoint, or null if an error occurred
+ */
 async function fetchData<T>(endpoint: string): Promise<T | null> {
     try {
-        console.log(`[INFO]: Hitting: ${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
+        console.log(`[INFO]: Fetching data from: ${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, { cache: 'no-store' });
         if (!response.ok) {
             console.error(`[ERROR]: Failed to fetch ${endpoint}: ${response.statusText}`);
             return null;
@@ -70,12 +71,13 @@ async function fetchData<T>(endpoint: string): Promise<T | null> {
     }
 }
 
+
 const Page = async () => {
     const locations = await fetchData<Location[]>('/api/locations');
     const users = await fetchData<User[]>('/api/users');
     const reviews = await fetchData<Review[]>('/api/reviews');
     const bookmarks = await fetchData<Bookmark[]>('/api/bookmarks');
-    
+
     return (
         <div>
             <h1 className="justify-self-center">Prototype Database Check</h1>
@@ -255,7 +257,6 @@ const Page = async () => {
                             Server Error: Unable to fetch bookmarks.
                         </div>
                     )}
-
                 </div>
             </div>
         </div>
