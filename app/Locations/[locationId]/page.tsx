@@ -7,15 +7,13 @@ const Page = async ({ params }: { params: { locationId: string } }) => {
     const { locationId } = params;
 
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/locations/${locationId}`);
+    const locationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/locations/${locationId}`);
+    const reviewsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/locationReviews/${locationId}`);
 
-    if (!res.ok) {
-        return <div>Failed to load location details</div>;
-    }
+    const location = await locationResponse.json();
+    const reviews = await reviewsResponse.json();
 
-    const location = await res.json();
 
-    console.log(location);
 
     return (
         <div className="p-6 bg-black rounded-lg shadow-md space-y-4">
@@ -56,6 +54,24 @@ const Page = async ({ params }: { params: { locationId: string } }) => {
                             </div>
                         </li>
                     ))}
+                </ul>
+            </div>
+
+            <div className="border-t border-gray-600 pt-4">
+                <h2 className="text-lg font-semibold text-white">Reviews</h2>
+                <ul className="space-y-4">
+                    {reviews.length > 0 ? (
+                        reviews.map((review: any) => (
+                            <li key={review.id} className="bg-gray-800 p-4 rounded-md">
+                                <p className="text-gray-300">{review.content}</p>
+                                <p className="text-gray-400">User: {review.user.username}</p>
+                                <p className="text-gray-400">Rating: {review.rating}</p>
+                                <p className="text-gray-400">Date: {new Date(review.creationDate).toDateString()}</p>
+                            </li>
+                        ))
+                    ) : (
+                        <p className="text-gray-400">No reviews available for this location.</p>
+                    )}
                 </ul>
             </div>
         </div>
