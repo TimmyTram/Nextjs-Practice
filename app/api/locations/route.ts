@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DayOfWeek, LocationType, PrismaClient } from "@prisma/client";
+import { DayOfWeek, LocationType } from "@prisma/client";
+import prisma from "../../../prisma/prisma";
 
 // defining the expected data for a location
 export interface LocationData {
@@ -24,7 +25,7 @@ export interface OperatingHour {
     closeTime: string;
 }
 
-const prisma = new PrismaClient();
+
 
 /**
  * @Endpoint - GET /api/locations

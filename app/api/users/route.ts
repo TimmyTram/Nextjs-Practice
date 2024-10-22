@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import prisma from "../../../prisma/prisma";
 
 // defining the expected data from client
 interface UserData {
@@ -9,9 +10,6 @@ interface UserData {
   password: string;
   role: Role;
 }
-
-// allows us to connect the database.
-const prisma = new PrismaClient();
 
 /**
  * @Endpoint - GET /api/users
