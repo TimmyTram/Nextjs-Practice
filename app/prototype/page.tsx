@@ -1,6 +1,10 @@
+'use client';
 import { convertTo12HourFormat } from "../utils/utils";
 import { DayOfWeek, LocationType } from "@prisma/client";
-
+import useLocationData from "../hooks/useLocationData";
+import useUserData from "../hooks/useUserData";
+import useReviewData from "../hooks/useReviewData";
+import useBookmarkData from "../hooks/useBookmarkData";
 
 /**
  * NOTE: THIS FILE AND FOLDER IS FOR THE VERTICAL PROTOTYPE ONLY, AND WILL BE REMOVED IN THE FINAL PRODUCT.
@@ -57,29 +61,32 @@ interface Bookmark {
  * @param endpoint - the endpoint to fetch data from
  * @returns - the data fetched from the endpoint, or null if an error occurred
  */
-async function fetchData<T>(endpoint: string): Promise<T | null> {
-    try {
-        console.log(`[INFO]: Fetching data from: ${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
-            cache: 'no-store',
-        });
-        if (!response.ok) {
-            console.error(`[ERROR]: Failed to fetch ${endpoint}: ${response.statusText}`);
-            return null;
-        }
-        return await response.json() as T;
-    } catch (error) {
-        console.error(`[ERROR]: Fetch error at ${endpoint}:`, error);
-        return null;
-    }
-}
+// async function fetchData<T>(endpoint: string): Promise<T | null> {
+//     try {
+//         console.log(`[INFO]: Fetching data from: ${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
+//         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`);
+//         if (!response.ok) {
+//             console.error(`[ERROR]: Failed to fetch ${endpoint}: ${response.statusText}`);
+//             return null;
+//         }
+//         return await response.json() as T;
+//     } catch (error) {
+//         console.error(`[ERROR]: Fetch error at ${endpoint}:`, error);
+//         return null;
+//     }
+// }
 
 
-const Page = async () => {
-    const locations = await fetchData<Location[]>('/api/locations');
-    const users = await fetchData<User[]>('/api/users');
-    const reviews = await fetchData<Review[]>('/api/reviews');
-    const bookmarks = await fetchData<Bookmark[]>('/api/bookmarks');
+const Page = () => {
+    // const locations = await fetchData<Location[]>('/api/locations');
+    // const users = await fetchData<User[]>('/api/users');
+    // const reviews = await fetchData<Review[]>('/api/reviews');
+    // const bookmarks = await fetchData<Bookmark[]>('/api/bookmarks');
+    
+    const { locations, loading: locationLoading, error: locationError } = useLocationData();
+    const { users, loading: userLoading, error: userError } = useUserData();
+    const { reviews, loading: reviewLoading, error: reviewError } = useReviewData();
+    const { bookmarks, loading: bookmarkLoading, error: bookmarkError } = useBookmarkData();
 
     return (
         <div>
