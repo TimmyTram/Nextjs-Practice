@@ -15,8 +15,6 @@ const Page = async ({ params }: { params: { locationId: string } }) => {
     const location = await locationResponse.json();
     const reviews = await reviewsResponse.json();
 
-
-
     return (
         <div className="p-6 bg-black rounded-lg shadow-md space-y-4">
             <h1 className="text-2xl font-bold text-white">{location.name}</h1>

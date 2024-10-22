@@ -9,7 +9,14 @@ import prisma from "../../../prisma/prisma";
  */
 export async function GET(request: NextRequest) {
     try {
+        
+        const { searchParams } = new URL(request.url);
+        const locationId = searchParams.get('locationId');
+
+        const whereCondition = locationId ? { locationId: locationId } : {};
+
         const reviews = await prisma.review.findMany({
+            where: whereCondition,
             select: {
                 id: true,
                 rating: true,
