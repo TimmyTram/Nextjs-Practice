@@ -8,7 +8,9 @@ const Page = async ({ params }: { params: { locationId: string } }) => {
 
 
     const locationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/locations/${locationId}`);
-    const reviewsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/locationReviews/${locationId}`);
+    const reviewsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/locationReviews/${locationId}`, 
+        { cache: "no-store" }
+    );
 
     const location = await locationResponse.json();
     const reviews = await reviewsResponse.json();
