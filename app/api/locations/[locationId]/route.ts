@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../prisma/prisma";
 
+export const dynamic = 'force-dynamic'
+
 /**
  * @Endpoint - GET /api/locations/{locationId}
  * @description - Fetches a single location from the database given a location id. 
@@ -35,7 +37,7 @@ export async function GET(req: NextRequest, { params }: { params: { locationId :
         });
 
         if(!location) {
-            return NextResponse.json({ error: "Location not found." }, { status: 404});
+            return NextResponse.json({ error: "Location not found." }, { status: 404 });
         }
 
         return NextResponse.json(location);

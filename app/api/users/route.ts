@@ -3,6 +3,8 @@ import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import prisma from "../../../prisma/prisma";
 
+export const dynamic = 'force-dynamic'
+
 // defining the expected data from client
 interface UserData {
   username: string;
@@ -29,7 +31,8 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(users, { headers: { 'Cache-Control': 'no-store' } });
+    return NextResponse.json(users);
+    //return NextResponse.json(users, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error: any) {
     console.log(`[ERROR]: Error in GET of api/users/route.ts: ${error}`);
     return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });

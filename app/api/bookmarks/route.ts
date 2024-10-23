@@ -12,22 +12,22 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
     try {
 
-        const { searchParams } = new URL(request.url);
-        const locationId = searchParams.get('locationId');
-        const userId = searchParams.get('userId');
+        // const { searchParams } = new URL(request.url);
+        // const locationId = searchParams.get('locationId');
+        // const userId = searchParams.get('userId');
 
-        const whereCondition: any = {};
+        // const whereCondition: any = {};
 
-        if (locationId) {
-            whereCondition.locationId = locationId;
-        }
+        // if (locationId) {
+        //     whereCondition.locationId = locationId;
+        // }
 
-        if (userId) {
-            whereCondition.userId = userId;
-        }
+        // if (userId) {
+        //     whereCondition.userId = userId;
+        // }
 
         const bookmarks = await prisma.bookmark.findMany({
-            where: whereCondition,
+            //where: whereCondition,
             select: {
                 id: true,
                 user: {
@@ -45,7 +45,8 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: 'No bookmarks found.' }, { status: 200 });
         }
 
-        return NextResponse.json(bookmarks, { headers: { 'Cache-Control': 'no-store' } });
+        return NextResponse.json(bookmarks);
+        //return NextResponse.json(bookmarks, { headers: { 'Cache-Control': 'no-store' } });
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/bookmarks/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../prisma/prisma";
 
+export const dynamic = 'force-dynamic'
+
 /**
  * @Endpoint - GET /api/reviews/{reviewId}
  * @description - Fetches a single review from the database given a review id. 
@@ -21,7 +23,7 @@ export async function GET(req: NextRequest, { params }: { params: { reviewId: st
         });
 
         if(!review) {
-            return NextResponse.json({ error: "Review not found." }, { status: 404});
+            return NextResponse.json({ error: "Review not found." }, { status: 404 });
         }
 
         return NextResponse.json(review);
