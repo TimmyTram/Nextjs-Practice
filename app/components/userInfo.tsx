@@ -7,11 +7,14 @@ import LogoutButton from "./logout";
 export default function UserInfo() {
     const { data: session, status } = useSession();
 
+    console.log(session);
+
     return (
         <>
             {status === "authenticated" ? (
                 <div className="bg-black p-4 rounded-lg shadow-md max-w-sm mx-auto">
                     <p className="text-lg font-semibold underline text-gray-300 mb-2">User Details</p>
+                    <p className="text-lg font-semibold text-gray-300 mb-2">USER ID: <span className="text-white">{session?.user.id}</span></p>
                     <p className="text-lg font-semibold text-gray-300 mb-2">USERNAME: <span className="text-white">{session?.user.username}</span></p>
                     <p className="text-lg font-semibold text-gray-300">ROLE: <span className="text-white">{session?.user.role}</span></p>
                     <LogoutButton />
