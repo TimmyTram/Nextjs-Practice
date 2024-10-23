@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../prisma/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../auth/[...nextauth]/authOptions";
 
 export const dynamic = 'force-dynamic'
 
@@ -16,6 +18,15 @@ interface ReviewData {
  * @returns - the created review.
  */
 export async function POST(req: NextRequest, { params }: { params: { locationId: string } }) {
+    
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
+    
+    
     try {
         const body: ReviewData = await req.json();
         const locationId = params.locationId;
@@ -23,7 +34,7 @@ export async function POST(req: NextRequest, { params }: { params: { locationId:
         const requiredFields: (keyof ReviewData)[] = [
             'rating',
             'content',
-            'userId'
+            //'userId'
         ]
 
         const missingFields = requiredFields.filter(field => !body[field] === undefined);
@@ -45,7 +56,8 @@ export async function POST(req: NextRequest, { params }: { params: { locationId:
         // realistcally this would not be needed to be included, but i dont have auth setup yet
         const user = await prisma.user.findFirst({
             where: {
-                id: body.userId
+                //id: body.userId
+                id: session.user.id
             }
         });
 
@@ -58,7 +70,8 @@ export async function POST(req: NextRequest, { params }: { params: { locationId:
                 rating: body.rating,
                 content: body.content,
                 locationId: locationId,
-                userId: body.userId
+                //userId: body.userId
+                userId: session.user.id
             }
         });
 
