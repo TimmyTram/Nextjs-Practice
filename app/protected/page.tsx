@@ -24,6 +24,7 @@ export default function Page() {
             <h1>Protected Page</h1>
             <p>This page is protected.</p>
             <p>Welcome: {session?.user.username}</p>
+            <p>Your Role is: {session?.user.role}</p>
             <LogoutButton />
         </div>
     );
