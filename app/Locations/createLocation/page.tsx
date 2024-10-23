@@ -7,6 +7,10 @@ import { useSession } from "next-auth/react";
 const Page = () => {
     const { data: session, status } = useSession();
 
+    if (status === "loading") {
+        return <div className="text-center">Loading...</div>; // Optional loading state
+    }
+
     if(status !== "authenticated" || session?.user.role !== "ADMIN") {
         return (
             <div className="text-center text-red-500">
