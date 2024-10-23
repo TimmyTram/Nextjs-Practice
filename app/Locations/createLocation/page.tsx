@@ -1,8 +1,22 @@
 'use client'
 import { useState } from 'react';
 import { DayOfWeek } from '@prisma/client';
+import { useSession } from "next-auth/react";
+
 
 const Page = () => {
+    const { data: session, status } = useSession();
+
+    if(status !== "authenticated" || session?.user.role !== "ADMIN") {
+        return (
+            <div className="text-center text-red-500">
+                <h1>Unauthorized</h1>
+                <p>You are not authorized to view this page.</p>
+            </div>
+        );
+    }
+    
+  
     const [formData, setFormData] = useState({
         name: '',
         address: '',

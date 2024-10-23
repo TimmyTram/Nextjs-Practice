@@ -24,7 +24,7 @@ export default function SignInPage() {
       setError(result.error);  // Handle sign-in error
     } else {
       // Redirect to a protected page after successful sign-in
-      router.push("/protected");
+      router.push("/");
     }
   };
 
