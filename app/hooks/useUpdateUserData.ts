@@ -17,25 +17,14 @@ const useUpdateUserData = () => {
                 },
                 body: JSON.stringify(formData),
             });
+            
+            const data = await res.json();
 
-            if(res.ok) {
-                console.log(`[INFO]: User data updated successfully.`);
-                
-                // TODO: Remove this alert in production
-                // could use a react toast notification library here
-                // this should be removed in production
-                alert("User data updated successfully.");
-            } else {
-                console.error(`[ERROR]: There was an error updating the user data.`);
-                
-                // TODO: Remove this alert in production
-                // could use a react toast notification library here
-                // this should be removed in production
-                alert("There was an error updating the user data.");
-            }
-
+            if(data.error) throw new Error(data.error);
+            alert('User data updated successfully!');
         } catch(error: any) {
-            console.error(`[ERROR]: There was an error in hooks/useUpdateUserData.ts: ${error}`);
+            //console.error(`[ERROR]: There was an error in hooks/useUpdateUserData.ts: ${error}`);
+            alert(`${error.message}`);
             return;
         }
     }

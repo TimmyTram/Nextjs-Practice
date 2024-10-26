@@ -127,8 +127,9 @@ export async function PATCH(req: NextRequest) {
   }
 
   try {
-
     const { email, password, settings } = await req.json();
+    console.log("[INFO]: PATCH request received with data: ", email, password, settings);
+
     const userId = session.user.id;
 
     if (!email && !password && !settings) {
@@ -164,7 +165,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // if they provided a request to change passwords
-    if (password) {
+    if (password && password.length != 0) {
       // hash the password before storing it in the database
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(password, salt);
