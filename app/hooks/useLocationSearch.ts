@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * example: /api/locations/search?name=starbuck&category=CAFE&hasWifi=true
+ *  where queryParam = {name=starbuck&category=CAFE&hasWifi=true}
+ * @Notes - Use this hook in the frontend
+ * @description - Custom hook to fetch locations based on query parameters
+ * @param queryParams - Query parameters to be used for filtering locations
+ * @returns - Returns an object containing locations, loading state and error state
+ */
 const useLocationSearch = (queryParams: string) => {
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
