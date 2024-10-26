@@ -38,7 +38,7 @@ const useCreateLocation = () => {
                 // TODO: Remove this alert in production
                 // could use a react toast notification library here
                 // this should be removed in production
-                alert("There was an error creating the location.");
+                alert(`"There was an error creating the location."`);
             }
         } catch (error: any) {
             console.error(`[ERROR]: There was an error in hooks/useCreateLocation.ts: ${error}`);
