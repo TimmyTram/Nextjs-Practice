@@ -32,35 +32,8 @@ const Page = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // if (status !== 'authenticated' || session?.user.role !== 'ADMIN') {
-        //     console.log('[INFO]: User is not authenticated or is not an admin | Not submitting form for location creation.');
-        //     alert('You are not authenticated or are not an admin. Only admins can create locations.');
-        //     return;
-        // }
-
         formData.seatingCapacity = Number(formData.seatingCapacity);
         await createLocation(formData, session);
-        // try {
-        //     const res = await fetch('/api/locations', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify(formData)
-        //     });
-
-        //     if (res.ok) {
-        //         console.log('Location created successfully!');
-        //         alert('Location created successfully!');
-        //     } else {
-        //         console.log('Error creating location.');
-        //         alert('Error creating location.');
-        //     }
-        // } catch (error: any) {
-        //     console.log(`[ERROR]: Error in POST of app/Locations/page.tsx: ${error}`);
-        //     return;
-        // }
     }
 
     return (
