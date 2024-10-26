@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DayOfWeek, LocationType } from "@prisma/client";
 import prisma from "../../../prisma/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/authOptions";
 
 export const dynamic = 'force-dynamic'
 
@@ -59,11 +61,18 @@ export async function GET() {
 }
 
 /**
+ * @Auth - Required (ADMIN)
  * @Endpoint - POST /api/locations
  * @description - Creates a new location with the provided data.
  * @returns - the newly created location.
  */
 export async function POST(req: NextRequest) {
+    const session = await getServerSession(authOptions);
+
+    if (!session || session.user.role !== 'ADMIN') {
+        return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+    
     try {
         const body: LocationData = await req.json();
         const requiredFields: (keyof LocationData)[] = [
