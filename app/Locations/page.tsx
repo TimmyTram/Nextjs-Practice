@@ -4,6 +4,7 @@ import useLocationData from "../hooks/useLocationData";
 import { DayOfWeek, LocationType } from "@prisma/client";
 import { convertTo12HourFormat } from "../utils/utils";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Location {
     id: string;
@@ -59,7 +60,13 @@ const Page = () => {
                         <p className="text-gray-300 mb-1"><span className="font-medium">Rating:</span> {location.rating}</p>
                         <p className="text-gray-300 mb-1"><span className="font-medium">Busyness Status:</span> {location.busynessStatus}</p>
                         <p className="text-blue-400 mb-1">
-                            <a href={location.imageWebLink} target="_blank" rel="noopener noreferrer">Image Link</a>
+                            {location.imageWebLink && location.imageWebLink !== "N/A" ? (
+                                <Image src={location.imageWebLink} alt={location.name} width={256} height={256} />
+                            ) : (
+                                <div>
+                                    <p>No Image Available</p>
+                                </div>
+                            )}
                         </p>
                         <p className="text-blue-400 mb-4">
                             <a href={location.locationWebsiteLink} target="_blank" rel="noopener noreferrer">Website Link</a>
