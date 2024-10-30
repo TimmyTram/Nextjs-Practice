@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import { DayOfWeek } from '@prisma/client';
 import { useSession } from "next-auth/react";
+
 import type { PutBlobResult } from '@vercel/blob';
 import Image from 'next/image';
 //import ImageForm from '@/app/components/ImageForm';
@@ -60,13 +61,6 @@ const Page = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (status !== 'authenticated' || session?.user.role !== 'ADMIN') {
-            console.log('[INFO]: User is not authenticated or is not an admin | Not submitting form for location creation.');
-            alert('You are not authenticated or are not an admin. Only admins can create locations.');
-            return;
-        }
-
         formData.seatingCapacity = Number(formData.seatingCapacity);
 
         if(!locationImage || locationImage.length === 0) {
