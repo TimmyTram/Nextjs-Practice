@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
+    "@vercel/blob": "^0.25.1",
     "backend-test": "file:",
     "bcryptjs": "^2.4.3",
     "mongodb": "^6.9.0",
