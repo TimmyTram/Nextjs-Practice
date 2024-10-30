@@ -1,14 +1,20 @@
 'use client'
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { DayOfWeek } from '@prisma/client';
 import { useSession } from "next-auth/react";
-import useCreateLocation from '../../hooks/useCreateLocation';
+
+import type { PutBlobResult } from '@vercel/blob';
+import Image from 'next/image';
+//import ImageForm from '@/app/components/ImageForm';
+
 
 
 const Page = () => {
     const { data: session, status } = useSession();
+    const inputFileRef = useRef<HTMLInputElement>(null);
+    const [locationImage, setLocationImage] = useState<string | null>(null);
+    const [blob, setBlob] = useState<PutBlobResult | null>(null);
 
-    const { loading, createLocation } = useCreateLocation();
     const [formData, setFormData] = useState({
         name: '',
         address: '',
@@ -18,6 +24,7 @@ const Page = () => {
         category: '',
         animalFriendliness: false,
         locationWebsiteLink: '',
+        imageWebLink: '',
         operatingHours: [
             { day: DayOfWeek.MONDAY, openTime: '', closeTime: '' },
             { day: DayOfWeek.TUESDAY, openTime: '', closeTime: '' },
@@ -29,11 +36,63 @@ const Page = () => {
         ]
     });
 
+    const handleImageUpload = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!inputFileRef.current?.files) {
+            throw new Error("No file selected");
+        }
+
+        const file = inputFileRef.current.files[0];
+
+        const response = await fetch(
+            `/api/image/upload?filename=${file.name}`,
+            {
+                method: 'POST',
+                body: file,
+            },
+        );
+
+        const newBlob = (await response.json()) as PutBlobResult;
+
+        setBlob(newBlob);
+        setLocationImage(newBlob.url);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         formData.seatingCapacity = Number(formData.seatingCapacity);
-        await createLocation(formData, session);
+
+        if(!locationImage || locationImage.length === 0) {
+            console.log('[ERROR]: No image uploaded for location.');
+            alert('No image uploaded for location.');
+            return;
+        }
+
+        formData.imageWebLink = locationImage;
+
+        console.log(formData);
+
+        try {
+            const res = await fetch('/api/locations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (res.ok) {
+                console.log('Location created successfully!');
+                alert('Location created successfully!');
+            } else {
+                console.log('Error creating location.');
+                alert('Error creating location.');
+            }
+        } catch (error: any) {
+            console.log(`[ERROR]: Error in POST of app/Locations/page.tsx: ${error}`);
+            return;
+        }
     }
 
     return (
@@ -129,6 +188,13 @@ const Page = () => {
                             value={formData.locationWebsiteLink}
                             onChange={(e) => setFormData({ ...formData, locationWebsiteLink: e.target.value })}
                         />
+                    </div>
+
+                    <div>
+                        <input name="file" ref={inputFileRef} type="file" required />
+                        <button onClick={handleImageUpload}>Upload</button>
+                        <p>Location Image URL: {locationImage}</p>
+                        {blob && <Image src={blob.url} alt="Location Image" width={256} height={256} />}
                     </div>
 
 
