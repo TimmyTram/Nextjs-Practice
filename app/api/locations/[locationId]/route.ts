@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../prisma/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/authOptions";
+
+import { del } from '@vercel/blob';
 
 export const dynamic = 'force-dynamic'
 
@@ -43,6 +47,48 @@ export async function GET(req: NextRequest, { params }: { params: { locationId :
         return NextResponse.json(location);
     } catch (error: any) {
         console.log(`[ERROR]: Error in GET of api/locations/[locationId]/route.ts: ${error}`);
+        return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: NextRequest, { params } : { params: { locationId: string }}) {
+    const session = await getServerSession(authOptions); 
+    
+    if (!session || session.user.role !== 'ADMIN') {
+        return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
+    try {
+        const locationId = params.locationId;
+
+        console.log("[INFO]: Got Location id: ", locationId);
+
+        if(!locationId) {
+            return NextResponse.json({ error: "No locationId provided." }, { status: 400 });
+        }
+
+        const location = await prisma.location.findFirst({
+            where: {
+                id: locationId
+            }
+        });
+
+        if(!location) {
+            return NextResponse.json({ error: "Location not found." }, { status: 404 });
+        }
+
+        await del(location.imageWebLink as string);
+
+
+        const deletedLocation = await prisma.location.delete({
+            where: {
+                id: locationId
+            }
+        });
+
+        return NextResponse.json(deletedLocation);
+    } catch (error: any) {
+        console.log(`[ERROR]: Error in DELETE of api/locations/[locationId]/route.ts: ${error}`);
         return NextResponse.json({ error: "Internal Server Error." }, { status: 500 });
     }
 }
